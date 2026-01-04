@@ -14,7 +14,7 @@
  * Pin Configuration:
  *   Pin 1 (N/C)  - Not Connected
  *   Pin 2 (VDD)  - +5V Power
- *   Pin 3 (GP2)  - LED output (with current-limiting resistor to GND)
+ *   Pin 3 (GP2)  - LED output (with current-limiting resistor)
  *   Pin 4 (GP1)  - Output (unused)
  *   Pin 5 (GP0)  - Output (unused)
  *   Pin 6 (N/C)  - Not Connected
