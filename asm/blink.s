@@ -9,12 +9,12 @@
 ;   - GP2 is configured as an output driving an LED.
 ;
 ; Device: PIC10F200 (8-pin PDIP)
-; Compiler: XC8 (v3.10)
+; Compiler: pic-as (v3.10)
 ;
 ; Pin Configuration:
 ;   Pin 1 (N/C)  - Not Connected
 ;   Pin 2 (VDD)  - +5V Power
-;   Pin 3 (GP2)  - LED output (with current-limiting resistor to GND)
+;   Pin 3 (GP2)  - LED output (with current-limiting resistor)
 ;   Pin 4 (GP1)  - Output (unused)
 ;   Pin 5 (GP0)  - Output (unused)
 ;   Pin 6 (N/C)  - Not Connected
@@ -35,7 +35,7 @@
 ;  RESET VECTOR (placed at 0x000 by linker option)
 ;
 ;  IMPORTANT:
-;  Use Project Properties ? pic-as Global Options ?
+;  Use Project Properties -> pic-as Global Options ->
 ;  Additional Options: -Wl,-presetVec=0h
 ;
 ;  This ensures the reset vector goes at 0x000 and does NOT
@@ -67,16 +67,16 @@ main:
 ;     GPWU = 1   Disable wake-on-change (no sleep wakeups)
 ;     GPPU = 1   Disable all weak pull-ups
 ;     T0CS = 0   Timer0 uses internal instruction clock
-;                ? GP2 remains a normal digital output
+;                -> GP2 remains a normal digital output
 ;     T0SE = 0   Timer0 Source Edge Select bit 
-;                ? Doesn't matter because T0CS=0
+;                -> Doesn't matter because T0CS=0
 ;     PSA  = 1   Prescaler assigned to WDT (unused)
 ;     PS2:PS0 = 000  Prescaler = 1:1 (unused)
 ;
 ;  Binary: 1100 1000
 ;  Hex:    0xC8
 ;
-;  This is the cleanest ?do nothing unusual? configuration:
+;  This is the cleanest "do nothing unusual" configuration:
 ;    - Ensures GP2 is NOT T0CKI
 ;    - No pull-ups
 ;    - No wake-on-change
