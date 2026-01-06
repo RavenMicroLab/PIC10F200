@@ -108,7 +108,8 @@ loop:
 ;   to 500ms delay as possible. The loops take 499,968 cycles.
 ;   We then fall into the pad to get the last 32 cycles.
 ;
-;   delay = 500,000 cycles (500ms) @ 4 MHz 
+;   delay = 500,000 cycles (500ms)
+;   1 M cycles per second instruction rate at 4 MHz Fosc  
 ;   Triple-nested loops: A=59, B=55, C=50
 ;===========================================================
 
@@ -138,25 +139,23 @@ loopC:
     ; and fall through into the pad block below
 
 pad:
-    ; 32-cycle pad: 16 × (goto $+1), each 2 cycles
-    goto    $+1
-    goto    $+1
-    goto    $+1
-    goto    $+1
-    goto    $+1
-    goto    $+1
-    goto    $+1
-    goto    $+1
-    goto    $+1
-    goto    $+1
-    goto    $+1
-    goto    $+1
-    goto    $+1
-    goto    $+1
-    goto    $+1
-    goto    $+1
+    ; There are a few ways you could go here. We need a 32-cycle pad:
+    ; Option 1. 32 * (NOP), each 1 cycle
+    ; Option 2. 16 × (goto $+1), each 2 cycles
+    ; Option 3. 8 * (call padret), call and retlw both take 2 cycles for a total of 4 cycles
+    call padret
+    call padret
+    call padret
+    call padret
+    call padret
+    call padret
+    call padret
+    call padret
 
     retlw   0	; return from delay
+
+padret:
+    retlw   0
 
 ;===========================================================
 ;  END OF PROGRAM
