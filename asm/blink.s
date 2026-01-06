@@ -155,7 +155,7 @@ pad:
     retlw   0	; return from delay
 
 padret:
-    retlw   0
+    retlw   0   ; retrun from pad
 
 ;===========================================================
 ;  END OF PROGRAM
