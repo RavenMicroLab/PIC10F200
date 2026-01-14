@@ -22,7 +22,7 @@ The PIC10F200 is an 8-bit microcontroller from Microchip with:
 
 ## Notes
 
-- The PIC10F200 has **no interrupts** and **no stack**, so programming is purely sequential
+- The PIC10F200 has **no interrupts** and **only a 2 level stack**
 - The factory calibration value at address 0xFF must be preserved during programming
 - The internal oscillator is approximately 4 MHz but can vary ±15% with temperature and voltage
 - GP3 is input-only and cannot be used as an output
