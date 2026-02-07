@@ -246,8 +246,12 @@ button_hit:
     
     ; Level reached 3 - Win celebration!
     call    win_celebration
+    ; Reset all game variables to start fresh
     clrf    level                       ; Reset level
-    goto    wait_button_release
+    clrf    position                    ; Reset to position 0 (Green)
+    movlw   1                           ; Reset direction to forward
+    movwf   direction
+    goto    wait_button_release_then_sleep
 
 button_miss:
     ; Wrong timing - reset level and show fail flash
@@ -262,6 +266,33 @@ wait_release_loop:
     
     call    simple_delay_short          ; Debounce delay after release
     retlw   0
+
+wait_button_release_then_sleep:
+    ; Wait for button to be released first
+wait_release_loop_sleep:
+    btfss   GPIO, GPIO_GP3_POSITION     ; Skip if button released (GP3 high)
+    goto    wait_release_loop_sleep     ; Keep waiting
+    
+    call    simple_delay_short          ; Debounce delay after release
+    
+    ; Now sleep until button is pressed to restart game
+wait_for_restart:
+    clrf    GPIO                        ; Keep all LEDs off
+    btfsc   GPIO, GPIO_GP3_POSITION     ; Skip if button pressed (GP3 low)
+    goto    wait_for_restart            ; Keep waiting
+    
+    ; Button pressed, debounce and restart
+    call    simple_delay_short
+    btfsc   GPIO, GPIO_GP3_POSITION     ; Check again
+    goto    wait_for_restart            ; Was just noise, keep waiting
+    
+    ; Button confirmed pressed, wait for release then restart game
+restart_button_release:
+    btfss   GPIO, GPIO_GP3_POSITION     ; Skip if button released (GP3 high)
+    goto    restart_button_release     ; Keep waiting
+    
+    call    simple_delay_short          ; Debounce delay after release
+    goto    game_loop                   ; Restart the game
 
 ;====================================================================
 ;  WIN CELEBRATION - Flash all LEDs
@@ -361,5 +392,3 @@ delay_inner:
 ;  END OF PROGRAM
 ;====================================================================
     end     resetVec
-
-
